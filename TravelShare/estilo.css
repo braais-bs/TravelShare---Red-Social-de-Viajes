@@ -1,0 +1,2017 @@
+/**************************************/
+/**************************************/
+/* CODIGO GENERAL PARA TODOS LOS HTML */
+/**************************************/
+/**************************************/
+
+
+/* ========= */
+/* VARIABLES */
+/* ========= */
+
+/* Colores más comunes usados en la web */
+:root {
+    --color-azul: #13bae2;
+    --color-fondo-general: #f4fbfd;
+    --color-letra-negra: #000000;
+    --color-letra-gris: #666666;
+}
+
+
+/* =========================================================== */
+/* ANCHO MAXIMO Y OCULTAR SCROLL HORIZONTAL SI FUERA NECESARIO */
+/* =========================================================== */
+
+html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+
+/* ========================== */
+/* ESTILOS GENERALES DE TEXTO */
+/* ========================== */
+
+/* Tipos de letra y estilos base para títulos desde h1 a h6 */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', Arial, sans-serif;
+    margin: 0;
+    color: var(--color-letra-negra);
+}
+
+/* Estilo para el h1 que hace de titulo de las paginas html */
+h1.encabezado-principal {
+    font-size: 2.8rem;
+    font-weight: 900;
+    line-height: 1.17;
+    letter-spacing: 0.02em;
+    padding-right: 4.2rem;
+    padding-left: 3.5rem;
+}
+
+/* Ajuste responsive para pantallas de menos de 1024px */
+@media (max-width: 1024px) {
+    h1.encabezado-principal {
+        font-size: 2rem;
+        padding-right: 4.2rem; /* Mantiene el padding derecho para evitar que choque con el boton del menu */
+        padding-left: 3rem; /* Reduce el padding izquierdo para que el titulo se pegue mas hacia el borde */
+    }
+}
+
+/* Estilo para el h3 que muestra el nombre del usuario en el menú */
+h3.nombre-usuario {
+    font-size: 1rem;
+    margin: 0 0 1.5rem 0;
+    color: var(--color-letra-negra);
+}
+
+/* Estilos para subtítulos de debajo de los titulos de las paginas html */
+p.subtitulo-principal {
+    font-size: 1.2rem; 
+    color: var(--color-letra-gris);
+    margin: 0.4rem 0 0 0;
+    padding-right: 3.2rem;
+}
+
+/* Ajuste responsive para pantallas de menos de 1024px */
+@media (max-width: 1024px) {
+    p.subtitulo-principal {
+        font-size: 1rem; /* Hace el tamaño de la fuente más pequeño */
+    }    
+}
+
+
+/* ================================== */
+/* ESTILOS GENERALES DE LA ESTRUCTURA */
+/* ================================== */
+
+/* Estilos para el body */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--color-fondo-general);
+    color: var(--color-azul);
+}
+
+/* Estructura principal que contiene el menú lateral y el contenido */
+.estructura {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Ajuste responsive para pantallas de menos de 700px */
+@media (max-width: 700px) {
+    .estructura {
+        flex-direction: column;
+    }
+}
+
+
+/* ================== */
+/* MENÚ DE NAVEGACIÓN */
+/* ================== */
+
+/* Checkbox que controla el menú oculta */
+.estado-menu {
+    display: none;
+}
+
+/* Botón para abrir y cerrar menú */
+.boton-menu {
+    display: none; /* Por defecto no se muestra */
+    position: fixed; /* Posición fija en la pantalla */
+    top: 1rem;
+    right: 1rem;
+    background: var(--color-azul);
+    color: #fff;
+    font-size: 1rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 1010; /* Posicion más alta que overlay para que se superponga */
+}
+
+/* Ajuste responsive para mostrar el botón que abre el menú en pantallas de menos de 700px */
+@media (max-width: 700px) {
+    .boton-menu {
+        display: block; /* Se muestra el botón */
+    }
+}
+
+/* Ajuste responsive que añade un overlay gris para que al abrir el menu la vista se centre en él */
+/* Cuando el estado del menu es checked se muestra (display: block), cuando no se esconde (display: none) */
+@media (max-width: 700px) {
+    /* Overlay gris cuando el menú está abierto en pantallas menores de 700px */
+    .overlay {
+        display: none; /* Por defecto no se ve */
+        z-index: 1000; /* Posicion más bajo que el menú para que no se superponga al menú */
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        background-color: #000000;
+        opacity: 0.3; /* Cambiamos la opacidad para que tenga un efecto de desfoque sobre el fondo */
+    }
+
+    /* Cuando el checkbox está marcado (checked), muestra el overlay */
+    .estado-menu:checked ~ .overlay {
+    display: block;
+    }
+}
+
+/* Estilo del menú lateral */
+aside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100vh; /* Hace que ocupe toda la altura de la ventana */ 
+    background: #fff;   
+    box-shadow: 0 0 14px rgba(0,50,100,0.25); /* Sombra para remarcar donde acaba y separar el menu del resto del contenido */
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column; /* Hace que los elementos del menú estén en una columna */
+    align-items: center;
+}
+
+/* Ajuste responsive para cuando el ancho de la pantalla es menor que a 700px, donde elcaside "desaparece" */
+/* Cuando el estado del menu es checked se muestra (translateX(0)), cuando no se esconde (translateX(-100%)) */
+@media (max-width: 700px) {
+    aside {
+        transform: translateX(-100%); /* Mueve el menú hacia la izquierda fuera de la vista */
+        transition: transform 0.3s ease; /* Pequeña animación para que no aparezca de golpe */
+        z-index: 1001; /* Posicion más alta que overlay para que se superponga */
+    }
+
+    /* Cuando el checkbox está marcado (checked), accede al aside dentro de estructura y lo muestra */
+    .estado-menu:checked ~ .estructura aside {
+    transform: translateX(0); /* Mueve el menú para que esté a la vista */
+    }
+}
+
+/* Foto de perfil circular */
+.foto-perfil {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%; /* hace la imagen circular */
+    object-fit: cover; /* Para que la imagen no se deforme */
+    margin-bottom: 1rem;
+    background: #e1eaf2; /* Color de fondo por si no hay imagen */
+}
+
+/* Estilo del texto del menu (son los enlaces) */
+.enlace-menu {
+    display: flex;
+    align-items: center;
+    color: var(--color-azul);
+    text-decoration: none; /* Elimina el subrayado */
+    padding: 0.3rem 2rem 0.3rem 36px; /* Ajusta el padding para dejar espacio para el svg */
+    border-radius: 10px;
+    margin-bottom: 0.8rem; /* Separación entre enlaces */
+    font-size: 0.95rem;
+    position: relative;
+}
+
+/* Efecto para cuando el ratón está sobre el enlace del menú */
+.enlace-menu:hover {
+    background: #e6f2fa; /* Tono blanco mas oscuro que el fondo */
+    color: var(--color-azul);
+}
+
+/* Estilo para los iconos svg antes de cada sección del menú */
+.enlace-menu::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+/* Iconos svg para cada sección del menú */
+.enlace-menu.explorar::before {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%2313bae2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/><circle cx="12" cy="12" r="10"/></svg>');
+}
+.enlace-menu.mis-destinos::before {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2313bae2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>');
+}
+.enlace-menu.recomendaciones::before {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%2313bae2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>');
+}
+.enlace-menu.publicar-cronica::before {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%2313bae2" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 17.25V21h3.75l11.064-11.064-3.75-3.75L3 17.25z"/><path d="M14.23 6.97l2.83 2.83"/></svg>');
+}
+.enlace-menu.perfil::before {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%2313bae2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>');
+}
+.enlace-menu.administrador::before {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%2313bae2" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l8 4v5c0 6.08-6.08 10-8 10S4 18.08 4 12V7z"/></svg>');
+}
+
+
+/* El enlace activo tiene fondo azul y la letra en color blanco*/
+.activo {
+    background: var(--color-azul);
+    color: #fff;
+    box-shadow: /* Sombra azul claro hacia abajo */
+        0 15px 20px -5px rgba(147, 197, 253, 0.7),
+        0 8px 12px -6px rgba(147, 197, 253, 0.65);
+
+}
+
+/* El svg en color blanco cuando esta seleccionada la seccion en el menu (cuando esta activo) */
+.activo::before {
+    filter: brightness(0) invert(1); /* Brightness 0 es color negro, invert lo hace blanco */
+}
+
+
+/* =========== */
+/* BLOQUE MAIN */
+/* =========== */
+
+/* Caja principal de contenido */
+main {
+    align-items: center;
+    margin-left: 250px; /* Algo más grande que el aside para centrar bien el bloque (nos fuerza a recentrar el bloque cuando el menu desaparezca) */
+    flex: 1; /* Ocupa todo el espacio que queda desde el margen izquierdo */
+    padding: 2.5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Ajuste responsive para pantallas de menos de 700px */
+@media (max-width: 700px) {
+    main {
+        padding: 1rem 0; /* Reduce el padding superior e inferior */
+        margin-left: 0; /* Elimina el margen izquierdo cuando desaparece el aside (menu lateral) */
+    }                  /* Permite centrar el contenido una vez el menu lateral desaparece */
+}
+
+
+/* ========== */
+/* ENCABEZADO */
+/* ========== */
+
+/* Caja del encabezado principal */
+.caja-encabezado-principal {
+    text-align: left;
+    margin-bottom: 1rem;
+    width: 100%;
+    padding: 0 2.5rem;
+}
+
+/* Ajuste responsive para pantallas de menos de 750px */
+@media (max-width: 750px) {
+    .caja-encabezado-principal {
+        padding: 0 1rem; /* Reduce padding lateral */
+    }
+}
+
+/* Título principal de cada sección */
+.encabezado-principal {
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.17;
+    letter-spacing: 0.02em;
+    margin: 0;
+    color: var(--color-letra-negra);
+}
+
+/* Subtítulo debajo del título principal de cada seccion */
+.subtitulo-principal {
+    font-size: 1rem;
+    color: var(--color-letra-gris);
+    margin: 0.2rem 0 0 0;
+}
+
+
+/* ======== */
+/* CRÓNICAS */
+/* ======== */
+
+/* CRONICAS CUADRADAS */
+
+/* Contenedor de las crónicas */
+.cronicas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* El contenido se coloca en 3 columnas */
+    gap: 2rem;
+    justify-content: center;
+}
+
+/* Ajuste responsive para pantallas de menos de 1350px */
+@media (max-width: 1350px) {
+    .cronicas {
+        grid-template-columns: repeat(2, 1fr); /* El contenido se coloca en 2 columnas */
+    }
+}
+
+/* Ajuste responsive para pantallas de menos de 950px */
+@media (max-width: 950px) {
+    .cronicas {
+        grid-template-columns: 1fr; /* El contenido se coloca en 1 columna */
+        justify-content: center;
+    }
+}
+
+/* Estilo de cada crónica individual */
+.cronica {
+    width: 260px; 
+    background: var(--color-fondo-blanco, #fff);
+    border-radius: 16px;
+    box-shadow:
+    0 1px 6px 0 rgba(56,137,180,0.08),
+    0 7px 29px 0 rgba(48,70,100,0.10),
+    0 1px 8px 1px rgba(48,70,100,0.05);
+    padding: 1rem;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Imagen de la crónica */
+.cronica img {
+    width: 100%;
+    border-radius: 12px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 0.6rem;
+}
+
+/* Título de la crónica */
+.titulo-cronica {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--color-azul);
+    margin-bottom: 0.3rem;
+}
+
+/* CRONICAS ALARGADAS */
+
+.cronicas-alargadas {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Ajuste responsive que hace que las crónicas dejen menos espacio con el lateral en pantallas de menos de 850px */
+@media (max-width: 850px) {
+    .cronicas-alargadas {
+        padding-left: 0.5rem;  /* menos espacio en los laterales */
+        padding-right: 0.5rem;
+    }
+}
+
+/* Estilo para cada crónica alargada */
+.cronica-alargada {
+    align-items: center;
+    display: flex;
+    align-items: stretch;
+    background: var(--color-fondo-blanco, #fff);
+    border-radius: 12px;
+    box-shadow:
+        0 1px 6px rgba(56,137,180,0.08),
+        0 7px 29px rgba(48,70,100,0.1);
+    overflow: hidden;
+}
+
+/* Ajustes del titulo de la propia cronica */
+.titulo-cronica-alargada {
+    text-align: left;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    color: var(--color-azul);
+}
+
+/* Ajustes de la imagen de las cronicas */
+.cronica-alargada img {
+    width: 180px;
+    height: 115px;
+    margin-left: 1rem;
+    object-fit: cover;    /* Para que el recorte sea correcto */
+    border-radius: 12px 0 0 12px;
+    flex-shrink: 0;
+    display: block;
+    align-self: center;
+}
+
+@media (max-width: 600px) {
+    .cronica-alargada img {
+        margin-left: 0.5rem;
+        width: 100px;
+    }
+}
+
+/* Ajustes para el texto que axompaña las cronicas alargadas */
+.cronica-alargada .detalles {
+    padding: 0.8rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@media (max-width: 600px) {
+    .cronica-alargada .detalles {
+        padding: 0.6rem 0.8rem;
+        text-align: center;
+    }
+}
+
+/* Ajustes del titulo de las cronicas alargadas */
+.cronica-alargada .titulo-cronica {
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--color-azul);
+    margin-bottom: 0.6rem;
+}
+
+@media (max-width: 600px) {
+    .cronica-alargada .titulo-cronica {
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
+}
+
+/* Ajustes del destino de las cronicas alargadas */
+.cronica-alargada .destino {
+    font-size: 1.1rem;
+    color: var(--color-letra-gris);
+    margin-bottom: 1.6rem;
+}
+
+@media (max-width: 600px) {
+    .cronica-alargada .destino {
+        font-size: 1rem;
+        margin-bottom: 1.4rem;
+    }
+}
+
+/* Ajustes de la fecha de las cronicas alargadas */
+.cronica-alargada .fecha {
+    font-size: 0.9rem;
+    color: var(--color-letra-gris);
+    font-style: italic;
+}
+
+@media (max-width: 600px) {
+    .cronica-alargada .fecha {
+        font-size: 0.8rem;
+    }
+}
+
+/* ================= */
+/* CARRUSEL IMAGENES */
+/* ================= */
+
+/* Contenedor del scroll de las imágenes */
+.scroll-imagenes {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    padding: 20px 0;
+    margin: 20px 0;
+    -webkit-overflow-scrolling: touch;
+    
+    /* Configuración de la barra para desplazarse para Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
+
+/* Estilo de cada imagen dentro del scroll */
+.scroll-imagenes img {
+    min-width: 350px;
+    max-width: 350px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+/* Efecto al pasar el ratón sobre la imagen */
+.scroll-imagenes img:hover {
+    transform: scale(1.05);
+}
+
+/* Configuración de la barra para desplazarse */
+.scroll-imagenes::-webkit-scrollbar {
+    height: 10px;
+}
+
+.scroll-imagenes::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.scroll-imagenes::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.scroll-imagenes::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.sin-imagenes {
+    color: #999;
+    font-style: italic;
+    margin: 20px 0;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .scroll-imagenes img {
+        min-width: 280px;
+        max-width: 280px;
+        height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .scroll-imagenes img {
+        min-width: 250px;
+        max-width: 250px;
+        height: 180px;
+    }
+}
+
+
+/* =========================== */
+/* CAJA PRINCIPAL DE CONTENIDO */
+/* =========================== */
+
+/* Caja principal del contenido con sombra más marcada hacia abajo */
+.caja-principal {
+    position: relative;
+    align-self: center;
+    background: var(--color-fondo-blanco, #fff);
+    border-radius: 20px;
+    box-shadow:
+        0 1.5px 8px 0 rgba(56,137,180,0.11),
+        0 9px 32px 0 rgba(48,70,100,0.15),
+        0 1.5px 10px 2px rgba(48,70,100,0.08);
+    padding: 2rem 2.5rem;
+    width: 80%;
+    max-width: 1100px;
+    min-width: 320px;
+    margin: 0 auto 3rem auto;
+}
+
+/* Ajuste responsive para pantallas de menos de 500px */
+@media (max-width: 500px) {
+    .caja-principal {
+        width: calc(100% - 2rem); /* Se reduce ancho para dejar margen */
+        margin: 0 1rem 1.5rem 1.5rem; /* Margen lateral para que no se pegue a los bordes y se reduce el margen inferior */
+        box-sizing: border-box;
+    }
+}
+
+
+/* =================== */
+/* ENLACE LEER CRÓNICA */
+/* =================== */
+
+.enlace-leer-cronica {
+    text-decoration: none;
+    color: inherit; 
+    display: block;
+}
+
+/* ================ */
+/* CONTENIDO OCULTO */
+/* ================ */
+
+/* Oculta elementos visualmente. Se utiliza para mantener temas de accesibilidad en caso de que algun elemento que no queremos que aparezca en la pagina debe aparecer */
+/* !important para que se le de prioridad y no ocurra que, en algún caso, no se oculten correctamente */
+.oculto-para-accesibilidad {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/****************************************/
+/****************************************/
+/* CODIGO ESPECIFICO PARA EXPLORAR.HTML */
+/****************************************/
+/****************************************/
+
+/* Añade el icono svg antes del título principal */
+h1.encabezado-principal.seccion-explorar::before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%2313bae2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/><circle cx="12" cy="12" r="10"/></svg>');
+    background-size: contain;
+    background-position: center;
+}
+
+/* Ajuste responsive para que el icono se empequeñezca junto con el tamaño de letra del titulo */
+@media (max-width: 1024px) {
+    h1.encabezado-principal.seccion-explorar::before {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* Posicionamiento relativo para que el icono svg se coloque correctamente */
+h1.encabezado-principal.seccion-explorar {
+    position: relative;
+}
+
+/* Estilos para los botones de acción de las cronicas */
+.boton-accion {
+    background: var(--color-azul);
+    width: 100px;     
+    height: 35px;     
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    margin: 0.3rem; /* Separación entre botones */
+    cursor: pointer;
+    text-decoration: none; /* Elimina el subrayado */
+    font-size: 0.9rem;
+    transition: background 0.3s;
+}
+
+/* Animacion del boton cuando se pasa el raton por encima */
+.boton-accion:hover {
+    background: #0e9cc0;
+}
+
+/* Ajustes del contenedor que contiene la barra de busqueda */
+.contenedor-buscador {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Cusdro del buscador */
+.texto-buscador {
+    flex-grow: 1;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-letra-gris);
+    border-radius: 7px;
+    font-size: 1rem;
+}
+
+/* Ajustes del boton de buscar */
+.boton-buscador {
+    background: var(--color-azul);
+    color: white;
+    border: none;
+    padding: 0 1rem;
+    font-size: 1rem;
+    border-radius: 7px;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.boton-buscador:hover {
+    background: #0f9dbf;
+}
+
+
+/*******************************************/
+/*******************************************/
+/* CODIGO ESPECIFICO PARA MISDESTINOS.HTML */
+/*******************************************/
+/*******************************************/
+
+/* Añade el icono svg antes del título principal */
+h1.encabezado-principal.seccion-misdestinos::before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2313bae2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>');
+    background-size: contain;
+    background-position: center;
+}
+
+/* Ajuste responsive para que el icono se empequeñezca junto con el tamaño de letra del titulo */
+@media (max-width: 1024px) {
+    h1.encabezado-principal.seccion-misdestinos::before {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* Posicionamiento relativo para que el icono svg se coloque correctamente */
+h1.encabezado-principal.seccion-misdestinos {
+    position: relative;
+}
+
+/* Contenedor de cada crónica individual */
+.contenedor-cronica {
+    position: relative;
+    margin-bottom: 1.5rem; /* Espacio entre crónicas */
+}
+
+/* Form del botón eliminar */
+.form-eliminar-guardado {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    margin: 0;
+    padding: 0;
+    z-index: 100;
+}
+
+/* Botón de eliminar guardado */
+.boton-eliminar-guardado {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    font-size: 2rem;
+    font-weight: 300;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    transition: color 0.2s;
+    outline: none;
+}
+
+.boton-eliminar-guardado:hover {
+    color: #e33522;
+}
+
+.boton-eliminar-guardado:focus {
+    outline: none;
+}
+
+
+
+/***********************************************/
+/***********************************************/
+/* CODIGO ESPECIFICO PARA RECOMENDACIONES.HTML */
+/***********************************************/
+/***********************************************/
+
+/* Añade el icono svg antes del título principal */
+h1.encabezado-principal.seccion-recomendaciones::before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%2313bae2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"/></svg>');
+    background-size: contain;
+    background-position: center;
+}
+
+/* Ajuste responsive para que el icono se empequeñezca junto con el tamaño de letra del titulo */
+@media (max-width: 1024px) {
+    h1.encabezado-principal.seccion-recomendaciones::before {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* Posicionamiento relativo para que el icono svg se coloque correctamente */
+h1.encabezado-principal.seccion-recomendaciones {
+    position: relative;
+}
+
+
+/***********************************************/
+/***********************************************/
+/* CODIGO ESPECIFICO PARA PUBLICARCRONICA.HTML */
+/***********************************************/
+/***********************************************/
+
+/* Añade el icono svg antes del título principal */
+h1.encabezado-principal.seccion-publicarcronica::before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%2313bae2" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 17.25V21h3.75l11.064-11.064-3.75-3.75L3 17.25z"/><path d="M14.23 6.97l2.83 2.83"/></svg>');
+    background-size: contain;
+    background-position: center;
+}
+
+/* Ajuste responsive para que el icono se empequeñezca junto con el tamaño de letra del titulo */
+@media (max-width: 1024px) {
+    h1.encabezado-principal.seccion-publicarcronica::before {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* Posicionamiento relativo para que el icono svg se coloque correctamente */
+h1.encabezado-principal.seccion-publicarcronica {
+    position: relative;
+}
+
+/* Ajustes del formulario */
+.formulario-publicacion form {
+    width: 97%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Ajustes de los textos (label)que indican al usuario qué debe ingresar */
+.formulario-publicacion label {
+    font-weight: bold;
+    color: var(--color-letra-negra);
+}
+
+/* Ajustes de los campos donde escribir texto y donde subir archivos */
+.formulario-publicacion input[type="text"],
+.formulario-publicacion textarea,
+.formulario-publicacion input[type="file"] {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid #c2e1ec; /* Borde azul más claro que color-azul */
+    font-size: 1rem;
+}
+
+/* Ajustes del boton para publicar la crónica */
+.boton-publicar {
+    background: var(--color-azul);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+/* Animacion cuando se pasa el raton por encima del obtón de publicar */
+.boton-publicar:hover {
+    background: #0f9dbf;
+}
+
+.error-publicacion {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.exito-publicacion {
+    background: #d4edda;
+    color: #155724;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+
+/**********************************************************/
+/**********************************************************/
+/* CODIGO ESPECIFICO PARA USERNORMAL-PUBLICARCRONICA.HTML */
+/**********************************************************/
+/**********************************************************/
+
+/* Ajustes del mensaje que avisa al usuairo Normal que no puede publicar cronicas */       
+.mensaje-aviso-usuario {
+    background: #ffe5e6;
+    color: #bb2525;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.08);
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;      
+    line-height: 1.8;
+}
+
+
+/**************************************/
+/**************************************/
+/* CODIGO ESPECIFICO PARA PERFIL.HTML */
+/**************************************/
+/**************************************/
+
+/* Ajustes caja superior */
+
+/* Ajustes del banner */
+.banner-perfil {
+    position: absolute;
+    height: 170px;
+    background: var(--color-azul);
+    border-radius: 20px 20px 0 0; /* Esquinas redondeadas solo arriba */
+    overflow: hidden;
+    z-index: 10;
+    /* Pegado arriba y a los lados */
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+/* Ajustes de la imagen del banner */
+.imagen-banner {
+    width: 100%;
+    height: 170px;
+    object-fit: cover; /* La imagen cubre todo el banner */
+    display: block;
+    position: relative;
+    opacity: 0.4; /* Bajamos la opacidad del azul del banner para que la imagen se vea difuminada */
+    top: 0;
+    left: 0;
+}
+
+/* Ajustes del contenedor con la información del usuario y boton de modificar perfil */
+.info-usuario {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem 2.5rem 2rem 0.5rem;
+}
+
+/* Ajuste responsive que permite que la informacion se reorganice y se junte en pantallas menores de 1150px */
+@media (max-width: 1150px) {
+    .info-usuario {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+/* Ajustes del boton de editar perfil */
+.boton-editar-perfil {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    background: var(--color-azul);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(56,189,248,0.12);
+    padding: 0.6rem 1rem 0.6rem 2.3rem;
+    font-size: 0.95rem;
+    font-weight: 400;
+    cursor: pointer;
+    position: absolute;
+    margin-top: 4rem;
+    right: 2rem;
+    z-index: 200;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7'/><path d='M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-size: 16px 16px;
+}
+
+/* Ajuste responsive que hace el boton más pequeño y lo reposiciona en pantallas menores a 950px */
+@media (max-width: 950px) {
+    .boton-editar-perfil {
+        border-radius: 12px;
+        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem 0.5rem 1.8rem;
+        background-position: 8px center;
+        background-size: 14px 14px;
+        margin-top: 4.3rem;
+        right: 1rem;
+    }
+}
+
+/* Ajuste responsive que hace el boton aún más pequeño y lo reposiciona en pantallas menores a 450px */
+@media (max-width: 450px) {
+    .boton-editar-perfil {
+        border-radius: 10px;
+        font-size: 0.7rem;
+        padding: 0.4rem 0.6rem 0.4rem 1.5rem;
+        background-position: 6px center;
+        background-size: 12px 12px;
+        margin-top: 4.7rem;
+        right: 0.5rem;
+    }
+}
+
+/* Efecto hover para el botón de editar perfil */
+.boton-editar-perfil:hover {
+    background: #0e9cc0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7'/><path d='M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-size: 16px 16px;
+}
+
+/* Ajuste responsive para hacer que el svg del boton no se desplace en pantallas menores a 950px */
+@media (max-width: 950px) {
+    .boton-editar-perfil:hover {
+        background-position: 8px center; /* Iguala la posición a la de boton-editar-perfil */
+        background-size: 14px 14px; /* Iguala el tamaño al de boton-editar-perfil */
+    }
+}
+
+/* Ajuste responsive para hacer que el svg del boton no se desplace en pantallas menores a 450px */
+@media (max-width: 450px) {
+    .boton-editar-perfil:hover {
+        background-position: 6px center; /* Iguala la posición a la de boton-editar-perfil */
+        background-size: 10px 10px; /* Iguala el tamaño al de boton-editar-perfil */
+    }
+}
+
+/* Foto de perfil del usuario */
+.foto-usuario {
+    width: 7.5vw;
+    height: 7.5vw;
+    min-width: 90px;
+    min-height: 90px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: 3.5rem;
+    background: #000000;
+    border: 4px solid #fff; /* Borde blanco que solo se ve en la zona del banner dando un efecto de separación */
+    z-index: 50; /* Por encima del banner */
+}
+
+/* Ajustes responsive que cambian el margen superior para centrar la imagen entre el banner y la información del usuario*/
+/* Menos de 1400px */
+@media (max-width: 1400px) {
+    .foto-usuario {
+    margin-top: 3.7rem;
+    }
+}
+
+/* Menos de 1200px */
+@media (max-width: 1200px) {
+    .foto-usuario {
+    margin-top: 4rem;
+    }
+}
+
+/* Ajustes de la propia imagen de perfil */
+.foto-usuario img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Contenedor de los datos del usuario sin imagen de perfil ni boton de modificar */
+.datos-usuario {
+    flex: 1;
+}
+
+/* Nombre del usuario */
+.nombre-usuario {
+    position: relative;
+    font-size: 2rem;
+    font-weight: bold;
+    z-index: 20; /* más que imagen-banner */
+    color: #000000;
+    margin-top: 4.5rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Ajuste responsive para que, a partir de 1150px de ancho, junto con el ajuste info-principal pone el nombre debajo del banner */
+@media (max-width: 1150px) {
+    .nombre-usuario {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 1.8rem;
+    }
+}
+
+/* Contenedor para el rol y ubicación) */
+.datos-adicionales {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+/* Ajustes del recuadro del rol */
+.etiqueta-rol {
+    background: var(--color-azul);
+    color: white;
+    border-radius: 8px;
+    padding: 0.2rem 0.9rem;
+    font-size: 1rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Ajustes de la ubicación del usuario */
+.ubicacion-usuario {
+    color: var(--color-letra-gris);
+    font-size: 1rem;
+    display: flex;
+    padding-left: 20px; /* Espacio con el svg */
+    align-items: center;
+    position: relative;
+}
+
+/* Svg de delante de la ubicación */
+.ubicacion-usuario::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 1.1rem;
+    height: 1.1rem;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0'></path><circle cx='12' cy='10' r='3'></circle></svg>");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+/* Modifica el enlace de cambiar rol (unete a nosotros) */
+.cambiar-rol {
+    color: var(--color-azul);
+    font-size: 0.9rem; 
+    text-decoration: underline;
+    text-decoration-color: var(--color-azul);
+    cursor: pointer;
+    margin-top: 5px;    
+}
+
+/* Ajuste responsive que hace el texto más pequeño en pantallas de menos de 500px de ancho */
+@media (max-width: 500px) {
+    .cambiar-rol {
+        font-size: 0.8rem;
+    }
+}
+
+/* Ajustes para la descripción del usuario */
+.descripcion-usuario {
+    font-size: 1rem;
+    color: var(--color-letra-gris);
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+}
+
+/* Contenedor de las estadísticas del usuario */
+.estadisticas-usuario {
+    display: flex;
+    align-items: flex-end;
+    gap: 2.5rem;
+    margin-top: 2rem;
+    margin-bottom: -2rem;
+}
+
+/* Para los contenedores de estadísticas */
+.estadisticas-usuario > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Estilo para los números de las estadísticas */
+.dato-numero {
+    font-size: 2.2rem;
+    color: var(--color-azul);
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Estilo para el texto de las estadísticas */
+.texto-estadistica {
+    color: var(--color-letra-gris);
+    font-size: clamp(0.85rem, 1.7vw, 1rem);
+    text-align: center;
+}
+
+/* Estilo para el mensaje cuando no hay experiencias publicadas */
+.sin-experiencias {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+/* Botón para cerrar sesión en el aside */
+.boton-cerrar-sesion {
+    display: flex;
+    align-items: center;
+    color: #e74c3c;
+    text-decoration: none; /* Elimina el subrayado */
+    padding: 0.3rem 2rem 0.3rem 36px; /* Ajusta el padding para dejar espacio para el svg */
+    border-radius: 10px;
+    margin-bottom: 0.8rem; /* Separación entre enlaces */
+    font-size: 0.95rem;
+    position: relative;
+}
+
+/* Efecto hover - solo cambia el fondo, color se mantiene igual */
+.boton-cerrar-sesion:hover {
+    background: #fdecea; /* Tono rojo muy claro */
+    color: #e74c3c;
+}
+
+/* SVG de cerrar sesión */
+.boton-cerrar-sesion::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%23e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>');
+}
+
+
+/*********************************************/
+/*********************************************/
+/* CODIGO ESPECIFICO PARA ADMINISTRADOR.HTML */
+/*********************************************/
+/*********************************************/
+
+/* Añade el icono svg antes del título principal */
+h1.encabezado-principal.seccion-administrador::before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%2313bae2" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l8 4v5c0 6.08-6.08 10-8 10S4 18.08 4 12V7z"/></svg>');
+    background-size: contain;
+    background-position: center;
+}
+
+/* Ajuste responsive para que el icono se empequeñezca junto con el tamaño de letra del titulo */
+@media (max-width: 1024px) {
+    h1.encabezado-principal.seccion-administrador::before {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* Posicionamiento relativo para que el icono svg se coloque correctamente */
+h1.encabezado-principal.seccion-administrador {
+    position: relative;
+}
+
+/* Ajustes para el contenedor que tiene las cajas de resumen de crónicas administradas */
+.panel-resumen {
+    align-self: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas en escritorio */
+    gap: 1.5rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+}
+
+/* Ajuste responsive que coloca las cajas en 2 columnas en pantaallas de menos de 1100px*/
+/* Se colocaran 2 arriba y 1 abajo */
+@media (max-width: 1100px) {
+    .panel-resumen {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Ajuste responsive que coloca las cajas en 1 columna en pantallas de menos de 700px */
+/* Se colocaran todas una debajo de otra */
+@media (max-width: 700px) {
+    .panel-resumen {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Ajustes de cada caja de resumen */
+.resumen-caja {
+    flex: 1 1 260px;
+    width: clamp(150px, 20vw, 300px);
+    height: 66px;
+    padding: 0.9rem 1.2rem;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Ajustes del titulo de cada caja */
+.resumen-titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* Ajustes del número dentro de cada caja */
+.resumen-numero {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: 0.1rem;
+}
+
+/* Ajustes de colores de la caja de cronicas pendientes */
+.resumen-caja.pendiente {
+    background: #ffeee0;
+    color: #b96519;
+}
+
+/* Svg dentro de la caja de cronicas pendientes */
+.resumen-caja.pendiente .resumen-icono {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%23b96519" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>');
+
+}
+
+/* Ajustes de colores de la caja de cronicas aprobadas */
+.resumen-caja.aprobada {
+    background: #e3faee;
+    color: #13833c;
+}
+
+/* Svg dentro de la caja de cronicas aprobadas */
+.resumen-caja.aprobada .resumen-icono {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%2313833c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>');
+}
+
+/* Ajustes de colores de la caja de cronicas rechazadas */
+.resumen-caja.rechazada {
+    background: #ffe5e6;
+    color: #bb2525;
+}
+
+/* Svg dentro de la caja de cronicas rechazadas */
+.resumen-caja.rechazada .resumen-icono {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="%23bb2525" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>');
+}
+
+/* Ajustes extra para los svg de cada caja */
+.resumen-icono {
+    background-repeat: no-repeat;
+    background-size: 40px 40px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    margin-right: 16px; 
+    margin-top: 5px;  
+    transform: translateY(10px); /* Centrado verticalmente ya que se alinea con el titulo */
+}
+
+/* Ajustes del texto que da comienzo a las crónicas */
+.texto-admin-cronicas {
+    text-align: center;
+    white-space: nowrap;
+    font-size: 1.5rem;
+    font-weight: 700;
+    box-sizing: border-box;
+    margin: 2.5rem 0 1rem 6rem; /* top right bottom left */
+}
+
+/* Ajuste responsive para que el margen izquierdo sica alineando correctamente el texto con caja-principal */
+@media (max-width: 1200px) {
+    .texto-admin-cronicas {
+        margin-left: 3rem;
+        font-size: 1.3rem;
+    }
+}
+
+/* Ajuste responsive para que el margen izquierdo sica alineando correctamente el texto con caja-principal */
+@media (max-width: 700px) {
+    .texto-admin-cronicas {
+        margin-left: 3rem;
+    }
+}
+
+/* Ajuste responsive para que el margen izquierdo sica alineando correctamente el texto con caja-principal */
+@media (max-width: 500px) {
+    .texto-admin-cronicas {
+        margin-left: 2rem;
+        font-size: 1rem;
+    }
+}
+
+
+/*******************************/
+/*******************************/
+/* ESTILOS PARA INISESION.HTML */
+/*******************************/
+/*******************************/
+
+/* Ajustes de fondo con efecto degradado azul */
+.fondo-login {
+    background: linear-gradient(135deg, var(--color-azul) 0%, #a0e8f9 100%);
+    font-family: 'Montserrat', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* HHace que ocupe toda la pantalla ya que si no solo rodea el contenedor de login */
+    min-height: 100vh;  /* ← CAMBIO: min-height en vez de height */
+    width: 100vw;
+    padding: 2rem 0;    /* ← AÑADIR: espacio arriba y abajo */
+}
+
+/* Contenedor del Inicio de Sesión */
+.contenedor-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Caja del Inicio de Sesión */
+.login-caja {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    padding: 2.5rem 3rem;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    align-items: center;
+    margin: 1rem auto; 
+}
+
+/* Ajuste responsive que reduce los margenes y padding en pantallas menores a 750px */
+@media (max-width: 750px) {
+    .login-caja {
+    margin: 1rem 1rem; /* Margenes para que la caja no toque los bordes en móviles */
+    padding: 1rem 1.5rem;
+    }
+}
+
+/* Título del Inicio de Sesión */
+.titulo-login {
+    color: var(--color-azul);
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* Subtítulo del Inicio de Sesión */
+.subtitulo-login {
+    color: var(--color-letra-gris);
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Ajustes del formulario del Inicio de Sesión */
+.formulario-login input {
+    width: 90%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #d1e6ef;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    outline: none;
+}
+
+/* Ajustes para el boton de Iniciar Sesión */
+.boton-login {
+    background: var(--color-azul);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+/* Estilos para cuando se pasa el raton por encima del botón de Iniciar Sesión */
+.boton-login:hover {
+    background: #0e9cc0;
+}
+
+/* Ajstes del texto de debajo del botón */
+.registro-texto {
+    margin-top: 1rem;
+    color: var(--color-letra-gris);
+}
+
+/* Ajustes para el enlace de registro */
+.registro-texto a {
+    color: var(--color-azul);
+    text-decoration: none;
+}
+
+/******************************/
+/******************************/
+/* ESTILOS PARA REGISTRO.HTML */
+/******************************/
+/******************************/
+
+/* Reutiliza los estilos base del inicio de sesión (inisesion.html) */
+
+/* Ajustes del selector de rol */
+.selector-rol {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #d1e6ef;
+    border-radius: 10px;
+    font-size: 1rem;
+    color: var(--color-letra-negra);
+    margin-bottom: 1rem;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+/* Ajustes cuando el selector de rol se pulsa */
+.selector-rol:focus {
+    outline: none;
+    border-color: var(--color-azul);
+}
+
+/* Ajustes para el texto (label) del selector de rol */
+.seleccion-rol {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    color: var(--color-letra-negra);
+    margin-bottom: 0.3rem;
+}
+
+
+/*******************************************/
+/*******************************************/
+/* CODIGO ESPECIFICO PARA CAMBIAR-ROL.HTML */
+/*******************************************/
+/*******************************************/
+
+/* Ajustes del fondo con efecto degradado azul */
+.fondo-cambio-rol {
+    background: linear-gradient(135deg, var(--color-azul) 0%, #a0e8f9 100%);
+    font-family: 'Montserrat', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Contenedor del cambio de rol */
+.contenedor-cambio-rol {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Ajustes de la propia caja del cambio de rol */
+.caja-cambio-rol {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    padding: 2.5rem 3rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Ajustes del titulo del cambio de rol */
+.titulo-cambio-rol {
+    color: var(--color-azul);
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+/* Ajusta los dos botones, tanto el de cambiar rol como el de volver */
+.boton-cambio-rol {
+    background: var(--color-azul);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+/* Color especfico del boton Si */
+.boton-si {
+    background: var(--color-azul);
+}
+
+/* Estilos para cuando se pasa el raton por encima del botón de si */
+.boton-si:hover {
+    background: #0e9cc0;
+}
+
+/* Ajustes específicos para el botón de volver */
+.boton-volver {
+    background: var(--color-letra-gris); /* Le da el mismo color gris que a la letra */
+    margin-top: 1rem; /* Separación del botón de Si */
+}
+
+/* Estilos para cuando se pasa el raton por encima del botón de volver */
+.boton-volver:hover {
+    background: #565e64;
+}
+
+
+/******************************************/
+/******************************************/
+/* CODIGO ESPECIFICO PARA MOD-PERFIL.HTML */
+/******************************************/
+/******************************************/
+
+/* Ajustes del fondo con efecto degradado azul */
+.fondo-modperfil {
+    background: linear-gradient(135deg, var(--color-azul, #007ACC) 0%, #a0e8f9 100%);
+    font-family: 'Montserrat', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenedor del modificar perfil */
+.contenedor-modperfil {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Ajustes de la propia caja del modificar perfil */
+.modperfil-caja {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    padding: 2.5rem 3rem;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    align-items: center;
+    margin: 1rem 0; /* Margen superior e inferior */
+
+}
+
+/* Ajuste responsive que reduce los margenes y padding en pantallas menores a 750px */
+@media (max-width: 750px) {
+    .modperfil-caja {
+    margin: 1rem 1rem; /* Margenes para que la caja no toque los bordes en móviles */
+    padding: 1rem 1.5rem;
+    }
+}
+
+/* Título del modificar perfil */
+.titulo-modperfil {
+    color: var(--color-azul, #007ACC);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+/* Ajustes del texto (label) de modificar perfil */
+.formulario-modperfil label {
+    display: block;
+    text-align: left;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+    color: var(--color-letra-negra);
+}
+
+
+/* Ajustes de los recuadros donde introducir texto */
+.formulario-modperfil input,
+.formulario-modperfil textarea {
+    width: 90%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #d1e6ef;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    outline: none;
+    resize: vertical;
+}
+
+/* Ajustes para los botones de guardar cambios y eliminar cuenta */
+.botonmodificar{
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+/* Estilos especificos para el botón de guardar cambios */
+.botonmod-guardar {
+    background: var(--color-azul, #007ACC);
+    color: white;
+}
+
+/* Animacion cuando se pasa el raton por encima del obtón de guardar cambios */
+.botonmod-guardar:hover {
+    background: #0e9cc0;
+}
+
+/* Estilos especificos para el botón de eliminar cuenta */
+.botonmod-eliminar {
+    background: #bb2525;
+    color: #fff;
+    margin-top: 1rem;
+    margin-bottom: -0.2rem; /* Reduce ligeramente la separación con el borde inferior */
+}
+
+/* Animacion cuando se pasa el raton por encima del obtón de eliminar cuenta */
+.botonmod-eliminar:hover {
+    background: #a11f1f;
+}
+
+
+/*****************************************/
+/*****************************************/
+/* ESTILOS ESPECÍFICOS PARA CRONICA.HTML */
+/*****************************************/
+/*****************************************/
+
+/* Añade el icono svg antes del título principal */
+h1.encabezado-principal.seccion-cronica::before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%2313bae2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l9 4.9V21H3V6.9L12 2z"/></svg>');
+    background-size: contain;
+    background-position: center;
+}
+
+/* Ajuste responsive para que el icono se empequeñezca junto con el tamaño de letra del titulo */
+@media (max-width: 1024px) {
+    h1.encabezado-principal.seccion-cronica::before {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* Ajustes para el titulo de la seccion */
+h1.encabezado-principal.seccion-cronica {
+    position: relative;
+}
+
+/* Ajustes del titulo de la propia cronica */
+.titulo-cronica {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    color: var(--color-azul);
+}
+
+/* Ajustes de la imagen principal de la crónica */
+.imagen-cronica-miniatura {
+    width: 100%;
+    max-height: 400px;
+    border-radius: 16px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+}
+
+/* Ajustes del texto quw separa cada apartado de la cronica */
+.apartado-cronica {
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    font-weight: bold;
+    margin-top: 2rem;
+    color: var(--color-azul);
+}
+
+/* Ajustes del texto de detalle destino, detalle ruta y texto cronica */
+.cronica-detalle p.detalle-destino,
+.cronica-detalle p.detalle-ruta,
+.cronica-detalle p.detalle-experiencia {
+    color: var(--color-letra-gris);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    text-align: justify;
+}
+
+/* Ajustes para el contenedor de botones de acciones en la crónica */
+.acciones-cronica {
+    display: flex;  
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Ajustes de los botones de acciones */
+.acciones-cronica .boton-accion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Ajustes del área de comentarios */
+.comentario {
+    width: 90%; 
+    margin-left: 5%;  
+    height: 75px;   
+    margin-top: 1rem;        
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-letra-gris);
+    font-size: 1rem;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+/* Configura el boton de enviar, similar a boton-acción */
+.boton-enviar {
+    display: block;
+    box-sizing: border-box;
+    background-color: var(--color-azul);
+    color: white;
+    border-radius: 12px;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    width: max-content;
+    margin: 0.5rem auto 0 auto;
+}
+
+/* Ajustes de color del boton eliminar */
+.boton-eliminar {
+    background: #bb2525;
+}
+
+/* Animacion cuando se pasa el raton por encima del obtón de eliminar */
+.boton-eliminar:hover {
+    background: #a11f1f;
+}
+
+/* Foto de perfil en comentarios */
+.comentario-foto-perfil {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.caja-principal.comentarios {
+    margin-top: 1.5rem;
+}
+
+.apartado-comentarios {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    color: var(--color-azul);
+}
+
+.comentario-item {
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-letra-gris-claro);
+    background: #ededed;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+}
+
+.comentario-autor {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.1rem;
+    color: var(--color-letra-negra);
+}
+
+.comentario-fecha {
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: var(--color-letra-negra);
+}
+
+.comentario-texto {
+    font-size: 0.9rem;
+    color: var(--color-letra-gris);
+}
+
+.comentario-vacio {
+    color: var(--color-letra-gris);
+    margin-top: 1rem;
+}
+
+hr.separador-comentarios {
+    border: 0;
+    height: 1px;
+    background: #b3d9ff; 
+    margin-top: -0.3rem;
+    margin-bottom: -0.3rem;
+}
+
+/**************************************************/
+/**************************************************/
+/* ESTILOS ESPECÍFICOS PARA CRONICA-DECISION.HTML */
+/**************************************************/
+/**************************************************/
+
+/* AJustes del boton aprobar */
+.boton-aprobar {
+    background: #28a745;
+}
+
+/* Animacion cuando se pasa el raton por encima del obtón de aprobar */
+.boton-aprobar:hover {
+    background: #218838;
+}
+
+/* Ajustes del enlace del boton aprobar */
+.enlace-boton {
+    text-decoration: none;
+    cursor: pointer;
+}

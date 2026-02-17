@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalación de TravelShare</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Instalación de TravelShare</h1>
+
+        <div class="creadores">
+            <strong>Creadores:</strong> Brais Bértolo Senra, Omar Razzouki Rodríguez
+        </div>
+
+        <h2>Servidor</h2>
+        <p>
+            Se utilizó XAMPP. Para ello, accedemos como administradores y activamos el panel de control de Apache y de
+            MySQL.
+        </p>
+
+        <h2>Base de Datos</h2>
+        <p>
+            La base de datos está dentro de la carpeta "Documentos extra", se llama <code>portal_viajes</code> y es un
+            archivo en formato sql. Una vez localizada, accederemos desde el navegador a
+            <code>localhost/phpmyadmin</code>.
+        </p>
+        <p>
+            Una vez dentro, veremos que en el menú superior aparece la opción "Importar", a la que accederemos y dentro
+            de ella en el apartado de "Fichero a Importar" seleccionaremos el fichero con la base de datos. Para
+            finalizar la importación, bajaremos hasta la parte de abajo y seleccionaremos "Importar".
+        </p>
+        <p>
+            Todo debería de haberse importado de manera correcta.
+        </p>
+
+        <h2>Iniciar la Aplicación</h2>
+        <p>
+            Se deberá copiar la carpeta TravelShare.
+        </p>
+        <p>
+            Después, buscaremos la carpeta "XAMPP" creada tras instalar la aplicación. Dentro de esa, encontraremos otra
+            carpeta llamada <code>htdocs</code>. Entramos y copiaremos nuestra carpeta ahí.
+        </p>
+        <p>
+            Para acceder a la aplicación, buscaremos en el navegador <code>localhost/TravelShare</code> lo que nos
+            llevará al index.
+        </p>
+
+        <h2>Usuarios y Roles</h2>
+        <p>
+            Para realizar las pruebas de la aplicación, se han preconfigurado varios usuarios con diferentes roles. Cada
+            rol tiene capacidades específicas dentro del sistema. A continuación se detallan las credenciales y
+            características de cada uno:
+        </p>
+
+        <h3>Tabla de Credenciales</h3>
+        <table border="1" cellpadding="10" cellspacing="0"
+            style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th>Usuario</th>
+                    <th>Email</th>
+                    <th>Contraseña</th>
+                    <th>Rol</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>braisbs</strong></td>
+                    <td>admin@gmail.com</td>
+                    <td>1234</td>
+                    <td><strong>Administrador</strong></td>
+                    <td>Acceso total. Puede gestionar usuarios, aprobar/rechazar crónicas y administrar contenido.</td>
+                </tr>
+                <tr>
+                    <td><strong>omar.raz</strong></td>
+                    <td>explorador@gmail.com</td>
+                    <td>1234</td>
+                    <td><strong>Explorador</strong></td>
+                    <td>Usuario explorador. Puede crear crónicas, comentar y valorar viajes.</td>
+                </tr>
+                <tr>
+                    <td><strong>alguien123</strong></td>
+                    <td>normal@gmail.com</td>
+                    <td>1234</td>
+                    <td><strong>Normal</strong></td>
+                    <td>Usuario normal. Puede ver contenido y guardar viajes, pero con opciones limitadas.</td>
+                </tr>
+                <tr>
+                    <td><strong>alberf991</strong></td>
+                    <td>alberfndz@gmail.com</td>
+                    <td>aabb</td>
+                    <td><strong>Normal</strong></td>
+                    <td>Otro perfil de usuario normal para pruebas adicionales.</td>
+                </tr>
+                <tr>
+                    <td><strong>mArcos_14</strong></td>
+                    <td>mmartin@gmail.com</td>
+                    <td>aabb</td>
+                    <td><strong>Explorador</strong></td>
+                    <td>Otro perfil de usuario explorador para pruebas adicionales.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Descripción de Roles</h3>
+        <ul>
+            <li><strong>Administrador:</strong> Es el encargado de mantener el orden en la plataforma. Tiene la
+                capacidad de validar las crónicas subidas por los usuarios antes de que sean públicas, así como de
+                eliminar las publicaciones si pasaron el filtro de manera erronea. Puede acceder a todas las opciones de la aplicación</li>
+            <li><strong>Explorador:</strong> Es el alma de TravelShare. Este rol identifica a aquellos usuarios
+                activos que desean compartir sus experiencias de viaje, subir fotos y mostrar sus rutas para inspirar a
+                los demás usuarios.</li>
+            <li><strong>Normal:</strong> Un rol pensado para aquellos que disfrutan consumiendo contenido. Pueden
+                navegar, y guardar sus crónicas favoritas.</li>
+        </ul>
+
+        <div class="nota">
+            <h2>Comentarios adicionales</h2>
+            <ul>
+                <li>El index nos permite ver la lista de crónicas publicadas, cualquier interactuación con la página nos
+                    redirigirá al inicio de sesión.</li>
+                <li>La página no tiene un botón de retroceder, está hecha para que para retroceder, por ejemplo entrando
+                    en una crónica desde la sección explorar, se pulse en la sección del menú lateral para volver hacia
+                    atrás.</li>
+                <li>En la sección donde el administrador puede ver las crónicas pendientes, aprobadas y rechazadas, las
+                    crónicas rechazadas y aceptadas serán solo las de los últimos 30 días.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
